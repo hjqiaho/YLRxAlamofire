@@ -1,0 +1,6 @@
+framework module YLRxAlamofire {
+  umbrella header "YLRxAlamofire-umbrella.h"
+
+  export *
+  module * { export * }
+}
