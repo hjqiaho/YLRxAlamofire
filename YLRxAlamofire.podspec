@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'YLRxAlamofire'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'YLRxAlamofire. change response.'
 
 # This description is used to generate tags and improve search results.
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   YLRxAlamofire. change response.
                        DESC
 
-  s.homepage         = 'https://github.com/hjqiaho@163.com/YLRxAlamofire'
+  s.homepage         = 'https://github.com/hjqiaho/YLRxAlamofire'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'hjqiaho@163.com' => 'hjqiaho@163.com' }
@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = "9.0"
   s.watchos.deployment_target = "3.0"
   
-  s.source_files = 'YLRxAlamofire/Classes/*'
+  s.source_files = 'YLRxAlamofire/Classes/*.swift'
   
   # s.resource_bundles = {
   #   'YLRxAlamofire' => ['YLRxAlamofire/Assets/*.png']
