@@ -800,7 +800,27 @@ extension Reactive where Base: DataRequest {
               observer.on(.error(RxAlamofireUnknownError))
             }
           case let .failure(error):
-            observer.on(.error(error as Error))
+            let aferr  =  error as NSError
+            if aferr.code == 4  {
+                //json解析错误
+                if packedResponse.response?.statusCode == 200 {
+                    var dataStr = "【null】"
+                    if let data = packedResponse.data {
+                        dataStr = String(data:data,encoding:.utf8) ?? "【转换成字符串失败】"
+                    }
+                    let err = NSError.init(domain:aferr.domain,
+                                           code: 200,
+                                           userInfo: [NSLocalizedDescriptionKey:"返回数据无法解析：\(dataStr)"])
+                    observer.on(.error(err))
+                }else{
+                    let err = NSError.init(domain:aferr.domain,
+                                           code: packedResponse.response?.statusCode ?? aferr.code,
+                                           userInfo: [NSLocalizedDescriptionKey:statusCodeMsg(statusCode: packedResponse.response?.statusCode, msg: aferr.localizedDescription)])
+                    observer.on(.error(err))
+                }
+            }else{
+                observer.on(.error(aferr))
+            }
           }
         }
       return Disposables.create {
@@ -808,7 +828,88 @@ extension Reactive where Base: DataRequest {
       }
     }
   }
-
+    //处理请求错误码
+    func statusCodeMsg(statusCode:Int?,msg:String) -> String {
+        switch statusCode {
+        
+        case 100:
+            return "请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。 "
+        case 101:
+            return "请求者已要求服务器切换协议，服务器已确认并准备切换。"
+            
+        case 300:
+            return "针对请求，服务器可执行多种操作。"
+        case 301:
+            return "请求的网页已永久移动到新位置。服务器返回此响应（对GET或HEAD请求的响应）时，会自动将请求者转到新位置。"
+        case 302:
+            return "服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。"
+        case 303:
+            return "请求者应当对不同的位置使用单独的 GET 请求来检索响应时，服务器返回此代码。"
+        case 304:
+            return "自从上次请求后，请求的网页未修改过。 服务器返回此响应时，不会返回网页内容。"
+        case 305:
+            return "请求者只能使用代理访问请求的网页。 如果服务器返回此响应，还表示请求者应使用代理。"
+        case 307:
+            return "服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。"
+            
+            
+        case 400:
+            return "服务器不理解请求的语法。"
+        case 401:
+            return "请求要求身份验证。对于需要登录的网页，服务器可能返回此响应。"
+        case 403:
+            return "服务器拒绝请求。"
+        case 404:
+            return "服务器找不到请求的网页。"
+        case 405:
+            return "禁用请求中指定的方法。"
+        case 406:
+            return "无法使用请求的内容特性响应请求的网页。"
+        case 407:
+            return "此状态代码与 401（未授权）类似，但指定请求者应当授权使用代理。"
+        case 408:
+            return "服务器等候请求时发生超时。"
+        case 409:
+            return "服务器在完成请求时发生冲突。服务器必须在响应中包含有关冲突的信息。"
+        case 410:
+            return "请求的资源已永久删除。"
+        case 411:
+            return "服务器不接受不含有效内容长度标头字段的请求。"
+        case 412:
+            return "服务器未满足请求者在请求中设置的其中一个前提条件。"
+        case 413:
+            return "服务器无法处理请求，因为请求实体过大，超出服务器的处理能力。"
+        case 414:
+            return "请求的 URI（通常为网址）过长，服务器无法处理。"
+        case 415:
+            return "请求的格式不受请求页面的支持。"
+        case 416:
+            return "如果页面无法提供请求的范围，则服务器会返回此状态代码。"
+        case 417:
+            return "服务器未满足期望请求标头字段的要求。"
+            
+            
+        case 500:
+            return "服务器遇到错误，无法完成请求。"
+        case 501:
+            return "服务器不具备完成请求的功能。 例如，服务器无法识别请求方法。"
+        case 502:
+            return "服务器作为网关或代理，从上游服务器收到无效响应。"
+        case 503:
+            return "服务器目前无法使用（由于超载或停机维护）。 通常，这只是暂时状态。"
+        case 504:
+            return "服务器作为网关或代理，但是没有及时从上游服务器收到请求。"
+        case 505:
+            return "服务器不支持请求中所用的 HTTP 协议版本。"
+            
+            
+        case 200:
+            return "请求成功。"
+        default:
+            return msg
+        }
+    }
+    
   public func responseJSON() -> Observable<DataResponse<Any>> {
     return Observable.create { observer in
       let request = self.base
