@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'YLRxAlamofire'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'YLRxAlamofire. change response.'
 
 # This description is used to generate tags and improve search results.
@@ -42,6 +42,6 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'Alamofire'
-  s.dependency 'RxSwift'
+  s.dependency 'Alamofire', '~> 4.9.1'
+  s.dependency 'RxSwift', '~> 5.1.1'
 end

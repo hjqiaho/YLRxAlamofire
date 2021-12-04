@@ -1,7 +1,7 @@
 PODS:
   - Alamofire (4.9.1)
   - RxSwift (6.2.0)
-  - YLRxAlamofire (0.1.3):
+  - YLRxAlamofire (0.1.4):
     - Alamofire
     - RxSwift
 
@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
-  YLRxAlamofire: d21ef9cc04b193ecec1fdfe8a380f2468225977b
+  YLRxAlamofire: 291c84969f6e6dd12196510e53fe42b8409e0760
 
 PODFILE CHECKSUM: 5c546d4093cd632e505df8821f362fa32e7d3948
 
